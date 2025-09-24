@@ -1,0 +1,59 @@
+[
+  {
+    "city": "Visakhapatnam",
+    "country": "India",
+    "coordinates": { "lat": 17.6868, "lon": 83.2185 },
+    "date": "2025-09-04",
+    "current": {
+      "temperature": 30,
+      "feels_like": 33,
+      "humidity": 75,
+      "pressure": 1010,
+      "wind_speed": 12,
+      "description": "scattered clouds"
+    },
+    "forecast": [
+      { "date": "2025-09-05", "min_temp": 27, "max_temp": 32, "description": "light rain" },
+      { "date": "2025-09-06", "min_temp": 26, "max_temp": 31, "description": "thunderstorm" },
+      { "date": "2025-09-07", "min_temp": 28, "max_temp": 33, "description": "clear sky" }
+    ]
+  },
+  {
+    "city": "Hyderabad",
+    "country": "India",
+    "coordinates": { "lat": 17.3850, "lon": 78.4867 },
+    "date": "2025-09-04",
+    "current": {
+      "temperature": 29,
+      "feels_like": 32,
+      "humidity": 68,
+      "pressure": 1008,
+      "wind_speed": 10,
+      "description": "haze"
+    },
+    "forecast": [
+      { "date": "2025-09-05", "min_temp": 25, "max_temp": 31, "description": "partly cloudy" },
+      { "date": "2025-09-06", "min_temp": 26, "max_temp": 32, "description": "light rain" },
+      { "date": "2025-09-07", "min_temp": 27, "max_temp": 33, "description": "clear sky" }
+    ]
+  },
+  {
+    "city": "New York",
+    "country": "USA",
+    "coordinates": { "lat": 40.7128, "lon": -74.0060 },
+    "date": "2025-09-04",
+    "current": {
+      "temperature": 22,
+      "feels_like": 21,
+      "humidity": 60,
+      "pressure": 1015,
+      "wind_speed": 8,
+      "description": "overcast clouds"
+    },
+    "forecast": [
+      { "date": "2025-09-05", "min_temp": 19, "max_temp": 24, "description": "light rain" },
+      { "date": "2025-09-06", "min_temp": 18, "max_temp": 23, "description": "broken clouds" },
+      { "date": "2025-09-07", "min_temp": 20, "max_temp": 25, "description": "clear sky" }
+    ]
+  }
+]
