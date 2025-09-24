@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./LoginPage.css";
+import "./LoginPage.css"; // Make sure this CSS contains all the styles below
 
 function WeatherPage() {
   const location = useLocation();
@@ -12,7 +12,7 @@ function WeatherPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Function to fetch weather
+  // Fetch weather from API
   const fetchWeather = async () => {
     if (!city.trim()) {
       setError("Please enter a city name");
@@ -24,7 +24,7 @@ function WeatherPage() {
     setError("");
 
     try {
-      const apiKey = "22c33f3b11fe3fe3f2588df94e90f2e3"; // Replace with your valid key
+      const apiKey = "22c33f3b11fe3fe3f2588df94e90f2e3"; // Replace with your valid API key
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
       );
@@ -36,18 +36,17 @@ function WeatherPage() {
         setError(data.message || "City not found");
         setWeather(null);
       }
-    } catch (err) {
+    } catch {
       setError("Error fetching weather data");
       setWeather(null);
     }
+
     setLoading(false);
   };
 
   // Enter key support
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      fetchWeather();
-    }
+    if (e.key === "Enter") fetchWeather();
   };
 
   const handleLogout = () => {
@@ -61,23 +60,21 @@ function WeatherPage() {
       <h1 className="title">🌍 Climate Hub</h1>
       <h2 className="subtitle">Welcome, {username}!</h2>
 
-      {/* Centered Search Box */}
+      {/* Centered Search */}
       <div className="search-box">
         <input
           type="text"
           placeholder="Enter city..."
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          onKeyDown={handleKeyPress} // works on Enter key
+          onKeyDown={handleKeyPress}
         />
         <button onClick={fetchWeather}>Search</button>
       </div>
 
-      {/* Loading & Error Messages */}
       {loading && <p className="loading">Fetching weather...</p>}
       {error && <p className="error">{error}</p>}
 
-      {/* Weather Info Card */}
       {weather && (
         <div className="glass-card weather-card">
           <h2>{weather.name}, {weather.sys.country}</h2>
@@ -88,7 +85,7 @@ function WeatherPage() {
         </div>
       )}
 
-      {/* Clickable Ads */}
+      {/* Ads Section */}
       <div className="ads-section">
         <a href="https://www.nationalgeographic.com/travel" target="_blank" rel="noopener noreferrer" className="ad-banner">
           🚀 Explore 8K World – Future Travel Ads
