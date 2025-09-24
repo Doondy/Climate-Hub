@@ -12,18 +12,19 @@ function WeatherPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Fetch weather from OpenWeatherMap
+  // Function to fetch weather
   const fetchWeather = async () => {
-    if (!city) {
-      setError("Please enter a city");
+    if (!city.trim()) {
+      setError("Please enter a city name");
       setWeather(null);
       return;
     }
 
     setLoading(true);
     setError("");
+
     try {
-      const apiKey = "22c33f3b11fe3fe3f2588df94e90f2e3"; // Replace with your valid API key
+      const apiKey = "22c33f3b11fe3fe3f2588df94e90f2e3"; // Replace with your valid key
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
       );
@@ -35,14 +36,14 @@ function WeatherPage() {
         setError(data.message || "City not found");
         setWeather(null);
       }
-    } catch {
+    } catch (err) {
       setError("Error fetching weather data");
       setWeather(null);
     }
     setLoading(false);
   };
 
-  // Press Enter to search
+  // Enter key support
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       fetchWeather();
@@ -55,25 +56,24 @@ function WeatherPage() {
 
   return (
     <div className="animated-bg weather-page">
-      {/* Flowers/scenery overlay */}
       <div className="flowers-overlay"></div>
 
       <h1 className="title">🌍 Climate Hub</h1>
       <h2 className="subtitle">Welcome, {username}!</h2>
 
-      {/* Search Bar */}
+      {/* Centered Search Box */}
       <div className="search-box">
         <input
           type="text"
           placeholder="Enter city..."
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          onKeyDown={handleKeyPress}
+          onKeyDown={handleKeyPress} // works on Enter key
         />
         <button onClick={fetchWeather}>Search</button>
       </div>
 
-      {/* Loading & Error */}
+      {/* Loading & Error Messages */}
       {loading && <p className="loading">Fetching weather...</p>}
       {error && <p className="error">{error}</p>}
 
@@ -101,7 +101,6 @@ function WeatherPage() {
         </a>
       </div>
 
-      {/* Logout Button */}
       <button onClick={handleLogout} className="logout-btn">Logout</button>
     </div>
   );
