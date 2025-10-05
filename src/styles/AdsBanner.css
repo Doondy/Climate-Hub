@@ -1,0 +1,20 @@
+.ads-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.ads-section a {
+  background: rgba(255,255,255,0.2);
+  padding: 10px 15px;
+  border-radius: 12px;
+  color: #111010;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.ads-section a:hover {
+  background: rgba(0, 122, 255, 0.4);
+}

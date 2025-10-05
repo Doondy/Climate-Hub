@@ -1,0 +1,54 @@
+/* AboutPage.css */
+
+/* Full screen container with nature-inspired gradient */
+.about-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #dcedc1, #a8e6cf, #ffd3b6);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+}
+
+/* Card styling */
+.about-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 40px 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  max-width: 800px;
+  width: 90%;
+  text-align: center;
+}
+
+/* Title */
+.about-title {
+  font-size: 2.5rem;
+  color: #2e7d32; /* forest green */
+  margin-bottom: 20px;
+}
+
+/* Text paragraphs */
+.about-text {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .about-card {
+    padding: 30px 20px;
+  }
+
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .about-text {
+    font-size: 1rem;
+  }
+}
