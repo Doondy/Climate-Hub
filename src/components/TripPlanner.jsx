@@ -8,21 +8,37 @@ function TripPlanner() {
   const handlePlan = () => {
     let plans = [];
 
-    switch (weather.toLowerCase()) {
+    switch (weather.trim().toLowerCase()) {
       case "sunny":
-        plans = ["Beach Trip 🏖️", "Mountain Trek 🏔️", "Picnic in the Park 🌳"];
+        plans = [
+          { name: "Beach Trip 🏖️", link: "https://www.booking.com/beach-holidays" },
+          { name: "Mountain Trek 🏔️", link: "https://www.booking.com/mountain-trekking" },
+          { name: "Picnic in the Park 🌳", link: "https://www.eventbrite.com/d/online/picnic/" },
+        ];
         break;
       case "rainy":
-        plans = ["Museum Visit 🖼️", "Indoor Cafe ☕", "Shopping Mall 🛍️"];
+        plans = [
+          { name: "Museum Visit 🖼️", link: "https://www.booking.com/museums" },
+          { name: "Indoor Cafe ☕", link: "https://www.yelp.com/cafes" },
+          { name: "Shopping Mall 🛍️", link: "https://www.tripadvisor.com/Shopping" },
+        ];
         break;
       case "cold":
-        plans = ["Hill Station Stay ❄️", "Hot Springs ♨️", "Scenic Drive 🚗"];
+        plans = [
+          { name: "Hill Station Stay ❄️", link: "https://www.booking.com/hill-stations" },
+          { name: "Hot Springs ♨️", link: "https://www.booking.com/hot-springs" },
+          { name: "Scenic Drive 🚗", link: "https://www.tripadvisor.com/ScenicDrives" },
+        ];
         break;
       case "windy":
-        plans = ["Kite Festival 🪁", "Cliff Walk 🌬️", "Lakeside Stroll 🌊"];
+        plans = [
+          { name: "Kite Festival 🪁", link: "https://www.eventbrite.com/d/online/kite-festival/" },
+          { name: "Cliff Walk 🌬️", link: "https://www.tripadvisor.com/CliffWalks" },
+          { name: "Lakeside Stroll 🌊", link: "https://www.tripadvisor.com/Lakes" },
+        ];
         break;
       default:
-        plans = ["Enter a valid weather condition!"];
+        plans = [{ name: "Enter a valid weather condition!", link: "#" }];
     }
 
     setSuggestions(plans);
@@ -35,15 +51,20 @@ function TripPlanner() {
 
       <input
         type="text"
-        placeholder="e.g., Sunny, Rainy, Cold"
+        placeholder="e.g., Sunny, Rainy, Cold, Windy"
         value={weather}
         onChange={(e) => setWeather(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handlePlan()}
       />
       <button onClick={handlePlan}>Generate Trip Plan</button>
 
       <ul>
         {suggestions.map((plan, index) => (
-          <li key={index}>{plan}</li>
+          <li key={index}>
+            <a href={plan.link} target="_blank" rel="noopener noreferrer">
+              {plan.name}
+            </a>
+          </li>
         ))}
       </ul>
     </div>

@@ -3,60 +3,72 @@ import "../styles/WeatherPage.css";
 
 function WeatherPage() {
   const [city, setCity] = useState("");
-  const [weatherData, setWeatherData] = useState(null);
+  const [weather, setWeather] = useState(null);
   const [error, setError] = useState("");
 
-  const handleSearch = async () => {
-    if (!city) return;
+  const API_KEY = "22c33f3b11fe3fe3f2588df94e90f2e3"; 
+
+  const fetchWeather = async () => {
+    if (!city) {
+      setError("Please enter a city name.");
+      setWeather(null);
+      return;
+    }
+
+    setError("");
+    setWeather(null);
 
     try {
-      // Replace YOUR_API_KEY with your OpenWeatherMap API key
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=22c33f3b11fe3fe3f2588df94e90f2e3&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
       );
+
       const data = await response.json();
 
       if (data.cod === 200) {
-        setWeatherData(data);
-        setError("");
+        setWeather(data);
       } else {
-        setError(data.message);
-        setWeatherData(null);
+        setError("City not found. Please check the name.");
       }
     } catch (err) {
-      setError("Error fetching weather data.");
-      setWeatherData(null);
+      setError("Network error. Please try again.");
     }
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") handleSearch();
+    if (e.key === "Enter") fetchWeather();
   };
 
   return (
-    <div className="weather-container">
-      <h1>Climate Hub Weather</h1>
-      <div className="search-box">
+    <div className="weather-page">
+      <h1 className="weather-title">🌤 Weather Dashboard</h1>
+
+      <div className="weather-form">
         <input
           type="text"
-          placeholder="Enter city name"
+          placeholder="Enter city name..."
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyPress={handleKeyPress} // Press Enter to search
         />
-        <button onClick={handleSearch}>Search</button>
+        <button onClick={fetchWeather}>Search</button>
       </div>
 
       {error && <p className="error">{error}</p>}
 
-      {weatherData && (
-        <div className="weather-card">
-          <h2>{weatherData.name}, {weatherData.sys.country}</h2>
-          <p>Temperature: {weatherData.main.temp} °C</p>
-          <p>Feels Like: {weatherData.main.feels_like} °C</p>
-          <p>Weather: {weatherData.weather[0].description}</p>
-          <p>Humidity: {weatherData.main.humidity} %</p>
-          <p>Wind Speed: {weatherData.wind.speed} m/s</p>
+      {weather && (
+        <div className="weather-info">
+          <h2>
+            {weather.name}, {weather.sys.country}
+          </h2>
+          <p>🌡 Temperature: {weather.main.temp} °C</p>
+          <p>💧 Humidity: {weather.main.humidity}%</p>
+          <p>🌬 Wind Speed: {weather.wind.speed} m/s</p>
+          <p>☁ Condition: {weather.weather[0].description}</p>
+          <img
+            src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+            alt={weather.weather[0].description}
+          />
         </div>
       )}
     </div>

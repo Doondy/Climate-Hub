@@ -1,6 +1,7 @@
-import React from "react";
-import WeatherChart from "../components/WeatherChart";
-
+import React, { useState } from "react"; // ✅ Import React and hooks together
+import WeatherChart from "../components/WeatherChart"; 
+import axios from "axios";               // ✅ Correct spelling
+import "../styles/WeatherGraphsPage.css"; // ✅ Correct file name
 function WeatherGraphsPage() {
   const tempData = [
     { date: "Mon", value: 29 },
@@ -21,8 +22,8 @@ function WeatherGraphsPage() {
   return (
     <div style={{ textAlign: "center" }}>
       <h2>📈 Past Weather Trends</h2>
-      <WeatherChart data={tempData} title="Temperature (°C) over Last 5 Days" />
-      <WeatherChart data={rainData} title="Rainfall (mm) over Last 5 Days" />
+      <WeatherChart data={tempData} title="Temperature (°C) over Last 7 Days" />
+      <WeatherChart data={rainData} title="Rainfall (mm) over Last 7 Days" />
     </div>
   );
 }

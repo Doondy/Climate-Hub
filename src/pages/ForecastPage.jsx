@@ -1,66 +1,65 @@
 import React, { useState } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import SearchBar from "../components/SearchBar";
-import Loader from "../components/Loader";
-import "./ForecastPage.css";
+import axios from "axios";
+import "../pages/ForecastPage.css";
 
 function ForecastPage() {
   const [city, setCity] = useState("");
-  const [forecast, setForecast] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [forecastData, setForecastData] = useState([]);
   const [error, setError] = useState("");
 
-  const API_KEY = "22c33f3b11fe3fe3f2588df94e90f2e3"; 
+  const API_KEY = "22c33f3b11fe3fe3f2588df94e90f2e3";
 
   const fetchForecast = async () => {
-    if (!city) return setError("Enter a city to check forecast.");
-    setLoading(true);
+    if (!city.trim()) {
+      setError("Please enter a city name.");
+      return;
+    }
     setError("");
-    setForecast([]);
 
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
       );
-      const data = await response.json();
 
-      if (data.cod === "200") {
-        // Pick one forecast per day (every 8th 3-hour reading)
-        const daily = data.list.filter((_, index) => index % 8 === 0);
-        setForecast(daily);
-      } else {
-        setError("City not found!");
-      }
-    } catch {
-      setError("Unable to fetch forecast data.");
+      setForecastData(response.data.list);
+    } catch (err) {
+      setError("City not found or network error.");
+      setForecastData([]);
     }
-    setLoading(false);
   };
 
   return (
     <div className="forecast-page">
-      <Header />
-      <SearchBar city={city} setCity={setCity} onSearch={fetchForecast} />
+      <h1>📅 Weather Forecast</h1>
 
-      {loading && <Loader />}
-      {error && <p className="error">{error}</p>}
-
-      <div className="forecast-grid">
-        {forecast.map((day, i) => (
-          <div key={i} className="forecast-card">
-            <p>{new Date(day.dt_txt).toDateString()}</p>
-            <img
-              src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
-              alt={day.weather[0].description}
-            />
-            <p>🌡️ {day.main.temp}°C</p>
-            <p>{day.weather[0].description}</p>
-          </div>
-        ))}
+      <div className="forecast-form">
+        <input
+          type="text"
+          placeholder="Enter city name..."
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <button onClick={fetchForecast}>Get Forecast</button>
       </div>
 
-      <Footer />
+      {error && <p className="error">{error}</p>}
+
+      {forecastData.length > 0 && (
+        <div className="forecast-cards">
+          {forecastData.map((item) => (
+            <div key={item.dt} className="forecast-card">
+              <p>
+                <strong>{new Date(item.dt * 1000).toLocaleString()}</strong>
+              </p>
+              <p>🌡 Temp: {item.main.temp} °C</p>
+              <p>💧 Humidity: {item.main.humidity}%</p>
+              <p>🌬 Wind: {item.wind.speed} m/s</p>
+              <p>☁ Condition: {item.weather[0].description}</p>
+              <p>🌧 Rainfall: {item.rain?.["3h"] ?? 0} mm</p> {/* ✅ Add rainfall */}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
