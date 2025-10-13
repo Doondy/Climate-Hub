@@ -7,8 +7,8 @@ import WeatherPage from "./pages/WeatherPage";
 import ForecastPage from "./pages/ForecastPage";
 import AboutPage from "./pages/About";
 import TripPlanner from "./components/TripPlanner";
-
 import WeatherGraphsPage from "./pages/WeatherGraphsPage";
+import AlertPage from "./pages/AlertPage"; // ✅ Added
 
 function App() {
   return (
@@ -35,6 +35,9 @@ function App() {
 
         {/* About Page */}
         <Route path="/about" element={<AboutPage />} />
+
+        {/* ✅ Alert Page */}
+        <Route path="/alerts" element={<AlertPage />} />
       </Routes>
     </Router>
   );

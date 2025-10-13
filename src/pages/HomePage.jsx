@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import "../styles/HomePage.css";
 
 function HomePage() {
@@ -7,7 +8,7 @@ function HomePage() {
 
   return (
     <div className="home-container">
-      {/* Sky & sun */}
+      {/* Background layers */}
       <div className="sky">
         <div className="sun"></div>
         <div className="cloud cloud1"></div>
@@ -15,19 +16,27 @@ function HomePage() {
         <div className="cloud cloud3"></div>
       </div>
 
-      {/* Foreground content */}
-      <div className="home-content">
-        <h1>Welcome to Climate Hub</h1>
-        <p>Explore weather insights and plan trips in harmony with nature.</p>
-        <button onClick={() => navigate("/login")}>Get Started</button>
-      </div>
-
-      {/* Grass / ground */}
-      <div className="grass"></div>
-
-      {/* Optional: birds animation */}
+      {/* Birds animation */}
       <div className="bird bird1"></div>
       <div className="bird bird2"></div>
+
+      {/* Foreground content */}
+      <motion.div
+        className="home-content"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      >
+        <h1>Welcome to <span>Climate Hub</span></h1>
+        <p>
+          Your all-in-one platform for real-time weather updates,
+          sustainable trip planning, and climate insights — stay informed, travel smart.
+        </p>
+        <button onClick={() => navigate("/login")}>Get Started</button>
+      </motion.div>
+
+      {/* Ground section */}
+      <div className="grass"></div>
     </div>
   );
 }

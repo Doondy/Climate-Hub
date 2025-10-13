@@ -5,7 +5,10 @@ function TripPlanner() {
   const [weather, setWeather] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
-  const handlePlan = () => {
+  // Function to generate trip plans based on entered climate
+  const handlePlan = (e) => {
+    e.preventDefault(); // Prevent page reload
+
     let plans = [];
 
     switch (weather.trim().toLowerCase()) {
@@ -49,18 +52,42 @@ function TripPlanner() {
       <h2>🗺️ Weather-Based Trip Planner</h2>
       <p>Enter the current or forecasted weather condition:</p>
 
-      <input
-        type="text"
-        placeholder="e.g., Sunny, Rainy, Cold, Windy"
-        value={weather}
-        onChange={(e) => setWeather(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handlePlan()}
-      />
-      <button onClick={handlePlan}>Generate Trip Plan</button>
+      {/* Form with styled input box */}
+      <form onSubmit={handlePlan}>
+        <input
+          type="text"
+          placeholder="Enter climate: Sunny, Rainy, Cold, Windy"
+          value={weather}
+          onChange={(e) => setWeather(e.target.value)}
+          style={{
+            padding: "10px",
+            width: "300px",
+            borderRadius: "5px",
+            border: "1px solid #ccc",
+            marginRight: "10px",
+            fontSize: "16px"
+          }}
+        />
+        <button
+          type="submit"
+          style={{
+            padding: "10px 15px",
+            fontSize: "16px",
+            borderRadius: "5px",
+            border: "none",
+            backgroundColor: "#007bff",
+            color: "white",
+            cursor: "pointer"
+          }}
+        >
+          Generate Trip Plan
+        </button>
+      </form>
 
-      <ul>
+      {/* Display trip suggestions */}
+      <ul style={{ marginTop: "20px" }}>
         {suggestions.map((plan, index) => (
-          <li key={index}>
+          <li key={index} style={{ marginBottom: "10px" }}>
             <a href={plan.link} target="_blank" rel="noopener noreferrer">
               {plan.name}
             </a>

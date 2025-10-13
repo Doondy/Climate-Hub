@@ -1,58 +1,84 @@
-.weather-graphs-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(to bottom, #a8edea, #fed6e3);
-  font-family: "Poppins", sans-serif;
-  padding: 30px;
+/* 1. Clear Sky / Sun */
+.bg-clear {
+  background: url('https://assets.codepen.io/3/clear-sky.mp4') no-repeat center center;
+  background-size: cover;
+  animation: bgMove 30s linear infinite;
+}
+
+/* 2. Cloudy */
+.bg-cloudy {
+  background: url('https://assets.codepen.io/3/cloudy-sky.mp4') no-repeat center center;
+  background-size: cover;
+  animation: bgMove 40s linear infinite;
+}
+
+/* 3. Rain */
+.bg-rain {
+  background: url('https://assets.codepen.io/3/rain.mp4') no-repeat center center;
+  background-size: cover;
+  animation: bgMove 20s linear infinite;
+}
+
+/* 4. Thunderstorm */
+.bg-thunder {
+  background: url('https://assets.codepen.io/3/thunder.mp4') no-repeat center center;
+  background-size: cover;
+  animation: bgMove 15s linear infinite;
+}
+
+/* 5. Snow */
+.bg-snow {
+  background: url('https://assets.codepen.io/3/snow.mp4') no-repeat center center;
+  background-size: cover;
+  animation: bgMove 35s linear infinite;
+}
+
+/* 6. Fog / Mist */
+.bg-fog {
+  background: url('https://assets.codepen.io/3/fog.mp4') no-repeat center center;
+  background-size: cover;
+  animation: bgMove 50s linear infinite;
+}
+
+/* 7. Sunset / Evening */
+.bg-sunset {
+  background: url('https://assets.codepen.io/3/sunset.mp4') no-repeat center center;
+  background-size: cover;
+  animation: bgMove 45s linear infinite;
+}
+
+/* 8. Night / Starry */
+.bg-night {
+  background: url('https://assets.codepen.io/3/starry-night.mp4') no-repeat center center;
+  background-size: cover;
+  animation: bgMove 60s linear infinite;
+}
+
+/* Common animation for all */
+@keyframes bgMove {
+  0% { background-position: 0 0; }
+  100% { background-position: -2000px 0; } /* Horizontal scrolling effect */
+}
+
+/* Make page content readable */
+.weather-graphs-page {
   text-align: center;
+  padding: 20px;
+  color: rgb(236, 8, 8);
+  position: relative;
+  z-index: 2;
 }
 
-.weather-graphs-container h1 {
-  color: #2e8b57;
-  margin-bottom: 10px;
-}
-
-.weather-graphs-container p {
-  color: #064420;
-  margin-bottom: 25px;
-}
-
-.input-section {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 30px;
-}
-
-.input-section input {
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #2e8b57;
-  width: 250px;
-  outline: none;
-}
-
-.input-section button {
-  padding: 10px 20px;
-  background-color: #2e8b57;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.input-section button:hover {
-  background-color: #1e5e3d;
-}
-
-.loading {
-  color: #1e5e3d;
-}
-
-.error {
-  color: red;
-  margin-top: 10px;
+.weather-graphs-page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.6; /* Adjust transparency */
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
 }
