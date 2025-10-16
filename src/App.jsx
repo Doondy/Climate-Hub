@@ -8,7 +8,7 @@ import ForecastPage from "./pages/ForecastPage";
 import AboutPage from "./pages/About";
 import TripPlanner from "./components/TripPlanner";
 import WeatherGraphsPage from "./pages/WeatherGraphsPage";
-import AlertPage from "./pages/AlertPage"; // ✅ Added
+import AlertPage from "./pages/AlertPage"; 
 
 function App() {
   return (

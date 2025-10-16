@@ -1,84 +1,150 @@
-/* 1. Clear Sky / Sun */
-.bg-clear {
-  background: url('https://assets.codepen.io/3/clear-sky.mp4') no-repeat center center;
-  background-size: cover;
-  animation: bgMove 30s linear infinite;
-}
-
-/* 2. Cloudy */
-.bg-cloudy {
-  background: url('https://assets.codepen.io/3/cloudy-sky.mp4') no-repeat center center;
-  background-size: cover;
-  animation: bgMove 40s linear infinite;
-}
-
-/* 3. Rain */
-.bg-rain {
-  background: url('https://assets.codepen.io/3/rain.mp4') no-repeat center center;
-  background-size: cover;
-  animation: bgMove 20s linear infinite;
-}
-
-/* 4. Thunderstorm */
-.bg-thunder {
-  background: url('https://assets.codepen.io/3/thunder.mp4') no-repeat center center;
-  background-size: cover;
-  animation: bgMove 15s linear infinite;
-}
-
-/* 5. Snow */
-.bg-snow {
-  background: url('https://assets.codepen.io/3/snow.mp4') no-repeat center center;
-  background-size: cover;
-  animation: bgMove 35s linear infinite;
-}
-
-/* 6. Fog / Mist */
-.bg-fog {
-  background: url('https://assets.codepen.io/3/fog.mp4') no-repeat center center;
-  background-size: cover;
-  animation: bgMove 50s linear infinite;
-}
-
-/* 7. Sunset / Evening */
-.bg-sunset {
-  background: url('https://assets.codepen.io/3/sunset.mp4') no-repeat center center;
-  background-size: cover;
-  animation: bgMove 45s linear infinite;
-}
-
-/* 8. Night / Starry */
-.bg-night {
-  background: url('https://assets.codepen.io/3/starry-night.mp4') no-repeat center center;
-  background-size: cover;
-  animation: bgMove 60s linear infinite;
-}
-
-/* Common animation for all */
-@keyframes bgMove {
-  0% { background-position: 0 0; }
-  100% { background-position: -2000px 0; } /* Horizontal scrolling effect */
-}
-
-/* Make page content readable */
 .weather-graphs-page {
-  text-align: center;
-  padding: 20px;
-  color: rgb(236, 8, 8);
-  position: relative;
-  z-index: 2;
+  font-family: "Inter", sans-serif;
+  color: #eaeaea;
+  background: linear-gradient(135deg, #0b132b, #1c2541);
+  min-height: 100vh;
+  padding: 40px;
+  transition: 0.3s ease;
 }
 
-.weather-graphs-page::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  opacity: 0.6; /* Adjust transparency */
-  background-size: cover;
-  background-position: center;
-  pointer-events: none;
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #ffd166;
+  margin-bottom: 8px;
 }
+
+.subtitle {
+  text-align: center;
+  color: #d0d0d0;
+  margin-bottom: 30px;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.search-bar input {
+  width: 280px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #3a506b;
+  color: #fff;
+  outline: none;
+}
+
+.search-bar input::placeholder {
+  color: #bbb;
+}
+
+.search-bar button {
+  background: #ffd166;
+  color: #0b132b;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.search-bar button:hover {
+  background: #f4b400;
+  color: #fff;
+}
+
+.error {
+  text-align: center;
+  color: #ff6b6b;
+  font-weight: 500;
+}
+
+.loading {
+  text-align: center;
+  color: #ffd166;
+  margin-top: 10px;
+}
+
+.charts-section {
+  max-width: 900px;
+  margin: 0 auto 40px;
+  background: #1c2541;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.news-section {
+  margin-top: 50px;
+}
+
+.news-section h2 {
+  color: #ffd166;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.news-card {
+  background: #3a506b;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.news-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.news-card h3 {
+  font-size: 1.1rem;
+  color: #ffd166;
+  margin-bottom: 8px;
+}
+
+.news-card p {
+  color: #eaeaea;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.read-more {
+  text-decoration: none;
+  color: #ffd166;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.read-more:hover {
+  color: #fff;
+}
+
+/* Background variants */
+.bg-clear { background: linear-gradient(135deg, #0b132b, #1c2541); }
+.bg-cloudy { background: linear-gradient(135deg, #3a506b, #5b6e91); }
+.bg-rain { background: linear-gradient(135deg, #1c2541, #3b4d61); }
+.bg-sunset { background: linear-gradient(135deg, #f79d65, #d85a7f); }
+.bg-thunder { background: linear-gradient(135deg, #232931, #393e46); }
+.bg-snow { background: linear-gradient(135deg, #a3c4f3, #ffffff); color: #0b132b; }
+.bg-fog { background: linear-gradient(135deg, #adb5bd, #ced4da); color: #0b132b; }
+.bg-night { background: linear-gradient(135deg, #0b132b, #2a2d34); }

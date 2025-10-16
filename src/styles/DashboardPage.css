@@ -1,84 +1,104 @@
+/* ========== General Layout ========== */
 .dashboard-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #89f7fe, #66a6ff);
-  color: #222;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
+  background: linear-gradient(to bottom right, #f8fafc, #e3f2fd);
+  color: #0a192f;
   font-family: "Poppins", sans-serif;
+  padding: 2rem;
 }
 
-/* Header */
+/* ========== Header ========== */
 .dashboard-header {
   text-align: center;
-  margin-bottom: 40px;
-  color: #ffffff;
+  margin-bottom: 2rem;
 }
 
 .dashboard-header h1 {
-  font-size: 3rem;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  color: #004080;
+  margin-bottom: 0.5rem;
 }
 
-.dashboard-header p {
-  font-size: 1.2rem;
-  opacity: 0.9;
+.dashboard-header .tagline {
+  color: #0077b6;
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
-/* Grid Layout */
+/* ========== Grid Layout ========== */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-  width: 90%;
-  max-width: 1000px;
+  gap: 1.8rem;
+  padding: 1rem 0;
 }
 
-/* Card Styling */
+/* ========== Cards ========== */
 .dashboard-card {
   background: #ffffff;
-  border-radius: 18px;
-  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
   text-align: center;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.dashboard-card h2 {
-  font-size: 1.5rem;
-  color: #0077b6;
-}
-
-.dashboard-card p {
-  font-size: 1rem;
-  color: #333;
-  margin-top: 10px;
+  border-top: 5px solid #0077b6;
 }
 
 .dashboard-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 119, 182, 0.2);
+  background: #f1f9ff;
 }
 
-/* Footer */
+.dashboard-card h2 {
+  color: #023e8a;
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-card p {
+  color: #333;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* ========== Footer Section ========== */
 .dashboard-footer {
-  margin-top: 40px;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
 }
 
 .logout-btn {
-  background-color: #ff4d6d;
+  background-color: #0077b6;
   color: white;
-  padding: 12px 25px;
   border: none;
-  border-radius: 30px;
-  font-size: 1.1rem;
+  padding: 0.8rem 1.8rem;
+  border-radius: 8px;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
-  background-color: #c9184a;
+  background-color: #023e8a;
   transform: scale(1.05);
+}
+
+/* ========== Responsiveness ========== */
+@media (max-width: 768px) {
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+  .dashboard-card {
+    padding: 1.2rem;
+  }
+  .logout-btn {
+    width: 80%;
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/ForecastPage.css";
 
@@ -7,9 +7,12 @@ function ForecastPage() {
   const [forecastData, setForecastData] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [news, setNews] = useState([]);
 
-  const API_KEY = "22c33f3b11fe3fe3f2588df94e90f2e3";
+  const WEATHER_API_KEY = "22c33f3b11fe3fe3f2588df94e90f2e3";
+  const NEWS_API_KEY = "76d22e87-7f27-4663-aefd-bb5d07427731";
 
+  // Fetch 5-day weather forecast
   const fetchForecast = async () => {
     if (!city.trim()) {
       setError("Please enter a city name.");
@@ -20,13 +23,11 @@ function ForecastPage() {
 
     try {
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${WEATHER_API_KEY}&units=metric`
       );
 
-      // Group forecast data by date (for a 5-day summary)
       const groupedData = [];
       const uniqueDays = new Set();
-
       response.data.list.forEach((item) => {
         const date = new Date(item.dt * 1000).toLocaleDateString();
         if (!uniqueDays.has(date)) {
@@ -44,9 +45,31 @@ function ForecastPage() {
     }
   };
 
+  // Fetch live news using NewsAPI
+  const fetchNews = async () => {
+    try {
+      const response = await axios.get(
+        `https://newsapi.org/v2/top-headlines?language=en&category=general&pageSize=6&apiKey=${NEWS_API_KEY}`
+      );
+      if (response.data.articles) {
+        setNews(response.data.articles);
+      }
+    } catch (err) {
+      console.error("Error fetching news:", err);
+      setNews([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
   return (
     <div className="forecast-page">
-      <h1>📅 5-Day Weather Forecast</h1>
+      <header className="forecast-header">
+        <h1>📅 5-Day Weather Forecast</h1>
+        <p>Plan your week with precise weather updates and latest news.</p>
+      </header>
 
       <div className="forecast-form">
         <input
@@ -70,15 +93,40 @@ function ForecastPage() {
                 src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                 alt={item.weather[0].description}
               />
-              <p>🌡 {item.main.temp} °C</p>
-              <p>💧 {item.main.humidity}% humidity</p>
-              <p>🌬 {item.wind.speed} m/s wind</p>
+              <p>🌡 Temperature: {item.main.temp} °C</p>
+              <p>💧 Humidity: {item.main.humidity}%</p>
+              <p>🌬 Wind: {item.wind.speed} m/s</p>
               <p>☁ {item.weather[0].description}</p>
               <p>🌧 Rain: {item.rain?.["3h"] ?? 0} mm</p>
             </div>
           ))}
         </div>
       )}
+
+      {/* News Section */}
+      <section className="news-section">
+        <h2>📰 Latest News</h2>
+        <div className="news-list">
+          {news.length > 0 ? (
+            news.map((article, index) => (
+              <div key={index} className="news-card">
+                {article.urlToImage && (
+                  <img src={article.urlToImage} alt={article.title} />
+                )}
+                <div className="news-content">
+                  <h4>{article.title}</h4>
+                  <p>{article.description || "No description available."}</p>
+                  <a href={article.url} target="_blank" rel="noopener noreferrer">
+                    Read more →
+                  </a>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No news available at the moment.</p>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
