@@ -1,0 +1,51 @@
+.employee-dashboard {
+  min-height: 100vh;
+  padding: 30px;
+  background: linear-gradient(to right, #f0f4f8, #e0f7fa);
+  color: #003366;
+  font-family: "Poppins", sans-serif;
+}
+
+.employee-dashboard h1 {
+  text-align: center;
+  color: #005f99;
+  margin-bottom: 20px;
+}
+
+.employee-nav {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.employee-nav a {
+  text-decoration: none;
+  color: #007acc;
+  font-weight: 600;
+  font-size: 1.05rem;
+  padding: 8px 18px;
+  border-radius: 20px;
+  transition: 0.3s;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.employee-nav a:hover {
+  background: #007acc;
+  color: white;
+  box-shadow: 0 3px 10px rgba(0, 122, 204, 0.3);
+}
+
+.employee-content {
+  background: #ffffff;
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.employee-content h2 {
+  color: #004d73;
+  margin-bottom: 10px;
+}

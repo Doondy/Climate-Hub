@@ -1,0 +1,51 @@
+/* src/styles/TravellerDashboard.css */
+
+/* Main dashboard container */
+.traveller-dashboard {
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7f9;
+  min-height: 100vh;
+}
+
+/* Dashboard title */
+.traveller-dashboard h1 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 2rem;
+}
+
+/* Navigation tabs container */
+.traveller-nav {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+/* Individual tab links */
+.traveller-nav a {
+  text-decoration: none;
+  padding: 10px 20px;
+  background-color: #0077cc;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.traveller-nav a:hover {
+  background-color: #005fa3;
+  transform: translateY(-2px);
+}
+
+/* Content area below tabs */
+.dashboard-content {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  min-height: 400px;
+}

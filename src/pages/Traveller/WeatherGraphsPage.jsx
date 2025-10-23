@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import WeatherChart from "../components/WeatherChart";
-import "../styles/WeatherGraphsPage.css";
+import WeatherChart from "../../components/WeatherChart";
+import "../../styles/WeatherGraphsPage.css"; 
 
 function WeatherGraphsPage() {
   const [city, setCity] = useState("");

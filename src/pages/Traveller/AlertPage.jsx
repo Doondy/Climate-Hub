@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/AlertPage.css";
+import "../../styles/AlertPage.css"; 
 
 const AlertPage = () => {
   const allAlerts = [

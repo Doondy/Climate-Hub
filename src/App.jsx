@@ -1,43 +1,53 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
-import WeatherPage from "./pages/WeatherPage";
-import ForecastPage from "./pages/ForecastPage";
-import AboutPage from "./pages/About";
-import TripPlanner from "./components/TripPlanner";
-import WeatherGraphsPage from "./pages/WeatherGraphsPage";
-import AlertPage from "./pages/AlertPage"; 
+
+// Employee
+import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
+import EmployeeProfile from "./pages/employee/EmployeeProfile";
+import EmployeeTasks from "./pages/employee/EmployeeTasks";
+import EmployeeReports from "./pages/employee/EmployeeReports";
+import EmployeeSettings from "./pages/employee/EmployeeSettings";
+
+// Traveller
+import TravellerDashboard from "./pages/Traveller/TravellerDashboard";
+import WeatherPage from "./pages/Traveller/WeatherPage";
+import ForecastPage from "./pages/Traveller/ForecastPage";
+import AboutPage from "./pages/Traveller/AboutPage";
+import AlertPage from "./pages/Traveller/AlertPage";
+import TripPlanner from "./pages/Traveller/TripPlanner";
+import WeatherGraphsPage from "./pages/Traveller/WeatherGraphsPage";
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Default Home Page */}
+        {/* Home and Login */}
         <Route path="/" element={<HomePage />} />
-
-        {/* Login Page */}
         <Route path="/login" element={<LoginPage />} />
 
-        {/* Dashboard after login */}
-        <Route path="/dashboard" element={<DashboardPage />} />
+        {/* Employee Dashboard */}
+        <Route path="/employee" element={<EmployeeDashboard />}>
+          <Route path="profile" element={<EmployeeProfile />} />
+          <Route path="tasks" element={<EmployeeTasks />} />
+          <Route path="reports" element={<EmployeeReports />} />
+          <Route path="settings" element={<EmployeeSettings />} />
+        </Route>
 
-        {/* Weather related pages */}
-        <Route path="/weather" element={<WeatherPage />} />
-        <Route path="/forecast" element={<ForecastPage />} />
+        {/* Traveller Dashboard */}
+        <Route path="/traveller" element={<TravellerDashboard />}>
+          <Route path="weather" element={<WeatherPage />} />
+          <Route path="forecast" element={<ForecastPage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="alert" element={<AlertPage />} />
+          <Route path="tripplanner" element={<TripPlanner />} /> 
+          <Route path="weathergraphs" element={<WeatherGraphsPage />} />
+        </Route>
 
-        {/* Trip planning */}
-        <Route path="/tripplanner" element={<TripPlanner />} />
-
-        {/* Past weather graphs */}
-        <Route path="/weathergraphs" element={<WeatherGraphsPage />} />
-
-        {/* About Page */}
-        <Route path="/about" element={<AboutPage />} />
-
-        {/* ✅ Alert Page */}
-        <Route path="/alerts" element={<AlertPage />} />
+        {/* Catch-all route for 404 */}
+        <Route path="*" element={<h2>404 - Page Not Found</h2>} />
       </Routes>
     </Router>
   );

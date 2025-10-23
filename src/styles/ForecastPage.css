@@ -1,200 +1,200 @@
-/* Page background and typography */
+/* 🌤 General Page Styling */
 .forecast-page {
-  background: linear-gradient(135deg, #0f172a, #1e293b);
-  color: #e2e8f0;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #eaf4fc, #f8fbff);
+  color: #1e293b;
   min-height: 100vh;
-  padding: 2rem;
-  font-family: "Poppins", sans-serif;
+  padding: 40px 5%;
+  box-sizing: border-box;
 }
 
-/* Header */
-.forecast-header {
+/* 🏷 Page Title */
+.forecast-page h1 {
   text-align: center;
-  margin-bottom: 2rem;
-}
-
-.forecast-header h1 {
   font-size: 2rem;
-  color: #38bdf8;
+  color: #0f4c81;
+  margin-bottom: 30px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
-.forecast-header p {
-  color: #cbd5e1;
-  font-size: 1rem;
-}
-
-/* Search form */
+/* 🔍 Search Form */
 .forecast-form {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 25px;
 }
 
 .forecast-form input {
-  padding: 0.8rem;
   width: 300px;
-  border-radius: 8px;
-  border: none;
+  padding: 12px 14px;
+  border: 1.5px solid #b0c4de;
+  border-radius: 10px;
+  font-size: 15px;
   outline: none;
-  font-size: 1rem;
-  background: #1e293b;
-  color: #e2e8f0;
+  transition: all 0.3s ease;
 }
 
-.forecast-form input::placeholder {
-  color: #94a3b8;
+.forecast-form input:focus {
+  border-color: #0f4c81;
+  box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.15);
 }
 
 .forecast-form button {
-  background: #2563eb;
+  padding: 12px 22px;
+  background-color: #0f4c81;
   color: white;
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
+  border-radius: 10px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
 .forecast-form button:hover {
-  background: #1d4ed8;
+  background-color: #0a375e;
+  transform: translateY(-1px);
 }
 
-/* Forecast cards */
+/* ⚠ Error / Loading */
+.error {
+  color: #e63946;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.loading {
+  color: #0f4c81;
+  text-align: center;
+  font-style: italic;
+}
+
+/* 🌦 Forecast Cards Layout */
 .forecast-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: 20px;
+  margin-top: 30px;
 }
 
 .forecast-card {
-  background: rgba(30, 41, 59, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 1rem;
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.07);
   text-align: center;
-  transition: transform 0.3s, background 0.3s;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .forecast-card:hover {
-  transform: scale(1.05);
-  background: rgba(37, 99, 235, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
 .forecast-card h3 {
+  color: #0f4c81;
   font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  color: #38bdf8;
+  margin-bottom: 10px;
+}
+
+.forecast-card img {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 10px;
 }
 
 .forecast-card p {
-  font-size: 0.9rem;
-  margin: 0.3rem 0;
-  color: #cbd5e1;
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #334155;
 }
 
-/* Error & loading messages */
-.error, .loading {
+/* 📰 Global News Section */
+.forecast-page h2 {
   text-align: center;
-  color: #f87171;
-  margin-top: 1rem;
+  color: #0f4c81;
+  font-size: 1.8rem;
+  margin: 50px 0 20px;
+  font-weight: 700;
 }
 
-/* News Section */
-.news-section {
-  margin-top: 3rem;
+/* 🗞 News Grid Layout */
+.news-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
 }
 
-.news-section h2 {
-  color: #38bdf8;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-/* News list with scrollable container */
-.news-list {
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  padding-bottom: 1rem;
-}
-
-.news-list::-webkit-scrollbar {
-  height: 8px;
-}
-
-.news-list::-webkit-scrollbar-thumb {
-  background: #2563eb;
-  border-radius: 4px;
-}
-
-.news-list::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* News cards */
 .news-card {
-  flex: 0 0 300px;
-  background: rgba(51, 65, 85, 0.7);
-  border-radius: 12px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, background 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .news-card:hover {
-  transform: translateY(-5px);
-  background: rgba(37, 99, 235, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
-.news-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-}
-
-.news-content {
-  padding: 1rem;
-}
-
-.news-content h4 {
-  color: #f8fafc;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  height: 2.4rem;
-  overflow: hidden;
-}
-
-.news-content p {
-  font-size: 0.85rem;
-  color: #cbd5e1;
-  margin-bottom: 0.8rem;
-  height: 3rem;
-  overflow: hidden;
-}
-
-.news-content a {
-  color: #38bdf8;
+.news-card a {
+  display: block;
+  color: inherit;
   text-decoration: none;
-  font-weight: 500;
+  padding: 16px;
 }
 
-.news-content a:hover {
-  text-decoration: underline;
+.news-image {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-/* Responsive adjustments */
+.news-card h3 {
+  font-size: 1rem;
+  margin: 12px 0 8px;
+  color: #0f172a;
+  line-height: 1.4;
+}
+
+.news-card p {
+  font-size: 0.9rem;
+  color: #475569;
+  margin: 4px 0;
+}
+
+.news-card .published {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 6px;
+  font-style: italic;
+  text-align: right;
+}
+
+/* 📱 Responsive */
 @media (max-width: 768px) {
-  .forecast-form input {
-    width: 200px;
+  .forecast-form {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .news-card {
-    flex: 0 0 250px;
+  .forecast-form input {
+    width: 85%;
+  }
+
+  .forecast-form button {
+    width: 85%;
+  }
+
+  .forecast-page h1 {
+    font-size: 1.6rem;
+  }
+
+  .forecast-page h2 {
+    font-size: 1.4rem;
   }
 }

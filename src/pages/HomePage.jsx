@@ -8,7 +8,7 @@ function HomePage() {
 
   return (
     <div className="home-container">
-      {/* Background layers */}
+      {/* Background */}
       <div className="sky">
         <div className="sun"></div>
         <div className="cloud cloud1"></div>
@@ -16,27 +16,42 @@ function HomePage() {
         <div className="cloud cloud3"></div>
       </div>
 
-      {/* Birds animation */}
-      <div className="bird bird1"></div>
-      <div className="bird bird2"></div>
+      {/* 🎈 Floating Balloons */}
+      <div className="balloon balloon1"></div>
+      <div className="balloon balloon2"></div>
+      <div className="balloon balloon3"></div>
+      <div className="balloon balloon4"></div>
 
-      {/* Foreground content */}
+      {/* Content */}
       <motion.div
         className="home-content"
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
-        <h1>Welcome to <span>Climate Hub</span></h1>
-        <p>
-          Your all-in-one platform for real-time weather updates,
-          sustainable trip planning, and climate insights — stay informed, travel smart.
+        <h1>
+          Welcome to <span className="highlight">Climate Hub</span> 🌍
+        </h1>
+        <p className="tagline">
+          Track the weather, plan eco-friendly trips, and stay connected with
+          our changing climate — all in one hub!
         </p>
-        <button onClick={() => navigate("/login")}>Get Started</button>
+
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className="get-started-btn"
+          onClick={() => navigate("/login")}
+        >
+          Get Started 🌤
+        </motion.button>
       </motion.div>
 
-      {/* Ground section */}
+      {/* Ground */}
       <div className="grass"></div>
+
+      {/* Footer */}
+      <footer className="footer-text">Made with 💚 by Climate Hub</footer>
     </div>
   );
 }

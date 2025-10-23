@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import "../styles/TripPlanner.css";
+import "../../styles/TripPlanner.css";
 
 function TripPlanner() {
   const [weather, setWeather] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
-  // Function to generate trip plans based on entered climate
   const handlePlan = (e) => {
     e.preventDefault(); // Prevent page reload
 
@@ -49,52 +48,36 @@ function TripPlanner() {
 
   return (
     <div className="trip-container">
-      <h2>🗺️ Weather-Based Trip Planner</h2>
-      <p>Enter the current or forecasted weather condition:</p>
+  <div className="trip-content">
+    <h2>🗺️ Weather-Based Trip Planner</h2>
+    <p>Enter the current or forecasted weather condition:</p>
 
-      {/* Form with styled input box */}
-      <form onSubmit={handlePlan}>
-        <input
-          type="text"
-          placeholder="Enter climate: Sunny, Rainy, Cold, Windy"
-          value={weather}
-          onChange={(e) => setWeather(e.target.value)}
-          style={{
-            padding: "10px",
-            width: "300px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-            marginRight: "10px",
-            fontSize: "16px"
-          }}
-        />
-        <button
-          type="submit"
-          style={{
-            padding: "10px 15px",
-            fontSize: "16px",
-            borderRadius: "5px",
-            border: "none",
-            backgroundColor: "#007bff",
-            color: "white",
-            cursor: "pointer"
-          }}
-        >
-          Generate Trip Plan
-        </button>
-      </form>
+    <form className="trip-form" onSubmit={handlePlan}>
+      <input
+        type="text"
+        placeholder="Sunny, Rainy, Cold, Windy"
+        value={weather}
+        onChange={(e) => setWeather(e.target.value)}
+      />
+      <button type="submit">Generate Trip Plan</button>
+    </form>
 
-      {/* Display trip suggestions */}
-      <ul style={{ marginTop: "20px" }}>
-        {suggestions.map((plan, index) => (
-          <li key={index} style={{ marginBottom: "10px" }}>
-            <a href={plan.link} target="_blank" rel="noopener noreferrer">
-              {plan.name}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="trip-list">
+      {suggestions.map((plan, index) => (
+        <li key={index}>
+          <a href={plan.link} target="_blank" rel="noopener noreferrer">
+            {plan.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <footer className="trip-footer">
+    © 2025 Climate Hub | Designed by Chandolu Doondy Sai Krishna
+  </footer>
+</div>
+    
   );
 }
 
