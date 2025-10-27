@@ -7,33 +7,76 @@ function TravellerDashboard() {
   const [travellers, setTravellers] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/travellers")
-      .then(res => setTravellers(res.data))
-      .catch(err => console.error("Error fetching travellers:", err));
+    axios
+      .get("http://localhost:5000/api/travellers")
+      .then((res) => setTravellers(res.data))
+      .catch((err) => console.error("Error fetching travellers:", err));
   }, []);
 
   return (
     <div className="traveller-dashboard">
-      <h1>Traveller Dashboard</h1>
+      {/* Header Section */}
+      <header className="dashboard-header">
+        <h1>Traveller Dashboard</h1>
+        <p>Explore, Plan & Stay Updated 🌍</p>
+      </header>
 
+      {/* Navigation */}
       <nav className="traveller-nav">
-        <Link to="/traveller/weather">Weather</Link>
-        <Link to="/traveller/forecast">Forecast</Link>
-        <Link to="/traveller/about">About</Link>
-        <Link to="/traveller/alert">Alert</Link>
-        <Link to="/traveller/tripplanner">Trip Planner</Link>
-        <Link to="/traveller/weathergraphs">Weather Graphs</Link>
+        <Link to="/traveller/memories">
+          <span className="nav-icon">📷</span>
+          Memories
+        </Link>
+        <Link to="/traveller/weather">
+          <span className="nav-icon">🌤️</span>
+          Weather
+        </Link>
+        <Link to="/traveller/forecast">
+          <span className="nav-icon">📊</span>
+          Forecast
+        </Link>
+        <Link to="/traveller/about">
+          <span className="nav-icon">ℹ️</span>
+          About
+        </Link>
+        <Link to="/traveller/alert">
+          <span className="nav-icon">⚠️</span>
+          Alert
+        </Link>
+        <Link to="/traveller/tripplanner">
+          <span className="nav-icon">✈️</span>
+          Trip Planner
+        </Link>
+        <Link to="/traveller/weathergraphs">
+          <span className="nav-icon">📈</span>
+          Weather Graphs
+        </Link>
       </nav>
 
-      <div className="traveller-content">
-        <h3>Registered Travellers:</h3>
-        <ul>
-          {travellers.map((t) => (
-            <li key={t._id}>{t.name} - {t.destination} ({t.date})</li>
-          ))}
-        </ul>
+      {/* Content Section */}
+      <section className="traveller-content">
+        <h3>Registered Travellers</h3>
+        <div className="traveller-list">
+          {travellers.length > 0 ? (
+            travellers.map((t) => (
+              <div className="traveller-card" key={t._id}>
+                <h4>{t.name}</h4>
+                <p>
+                  Destination: <span>{t.destination}</span>
+                </p>
+                <p>
+                  Date: <span>{t.date}</span>
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="no-data">No travellers registered yet.</p>
+          )}
+        </div>
+
+        {/* Nested Route */}
         <Outlet />
-      </div>
+      </section>
     </div>
   );
 }

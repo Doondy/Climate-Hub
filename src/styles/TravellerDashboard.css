@@ -1,51 +1,235 @@
-/* src/styles/TravellerDashboard.css */
-
-/* Main dashboard container */
 .traveller-dashboard {
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f7f9;
-  min-height: 100vh;
-}
-
-/* Dashboard title */
-.traveller-dashboard h1 {
+  font-family: "Poppins", sans-serif;
   color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 2rem;
+  background: linear-gradient(to bottom right, #e6f0ff, #f9f9ff);
+  min-height: 100vh;
+  padding: 0;
 }
 
-/* Navigation tabs container */
+/* Header */
+.dashboard-header {
+  text-align: center;
+  background: linear-gradient(135deg, #1e90ff, #00bcd4);
+  color: white;
+  padding: 2rem 1rem;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.dashboard-header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.dashboard-header h1 {
+  font-size: 2.4rem;
+  margin-bottom: 0.5rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.dashboard-header p {
+  font-size: 1rem;
+  opacity: 0.9;
+  animation: fadeIn 1s ease-out 0.5s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Navigation Bar */
 .traveller-nav {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-bottom: 30px;
   flex-wrap: wrap;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  border-radius: 1rem;
+  margin: 1.5rem auto;
+  width: 90%;
+  max-width: 900px;
 }
 
-/* Individual tab links */
 .traveller-nav a {
+  color: #0077b6;
   text-decoration: none;
-  padding: 10px 20px;
-  background-color: #0077cc;
-  color: #fff;
-  border-radius: 8px;
   font-weight: 500;
-  transition: background-color 0.3s, transform 0.2s;
+  margin: 0.6rem 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.8rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.traveller-nav a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(0, 119, 182, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+
+.traveller-nav a:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .traveller-nav a:hover {
-  background-color: #005fa3;
-  transform: translateY(-2px);
+  background: #0077b6;
+  color: white;
+  box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4);
+  transform: translateY(-3px);
 }
 
-/* Content area below tabs */
-.dashboard-content {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-  min-height: 400px;
+.traveller-nav a:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(0, 119, 182, 0.3);
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.traveller-nav a:hover .nav-icon {
+  transform: rotate(360deg) scale(1.2);
+}
+
+/* Traveller List Section */
+.traveller-content {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.traveller-content h3 {
+  text-align: center;
+  color: #003566;
+  margin-bottom: 1.5rem;
+}
+
+.traveller-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.traveller-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.traveller-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 119, 182, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.traveller-card:hover::before {
+  left: 100%;
+}
+
+.traveller-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 119, 182, 0.3);
+}
+
+.traveller-card h4 {
+  color: #0077b6;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.traveller-card p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.traveller-card span {
+  color: #444;
+  font-weight: 500;
+}
+
+.no-data {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  margin-top: 1rem;
 }

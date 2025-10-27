@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../styles/EmployeeTasks.css"; // Create this CSS file
+import "../../styles/EmployeeTasks.css";
 
 function EmployeeTasks() {
   const [tasks, setTasks] = useState([
@@ -10,6 +10,7 @@ function EmployeeTasks() {
 
   const [newTask, setNewTask] = useState("");
   const [priority, setPriority] = useState("Medium");
+  const [filter, setFilter] = useState("All");
 
   const handleAddTask = () => {
     if (!newTask.trim()) return;
@@ -35,11 +36,18 @@ function EmployeeTasks() {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === "Completed") return task.completed;
+    if (filter === "Pending") return !task.completed;
+    return true;
+  });
+
   return (
     <div className="employee-tasks">
-      <h2>🗂 Employee Tasks</h2>
-      <p className="subtitle">Track your assigned tasks and stay productive.</p>
+      <h2>🗂 Employee Task Manager</h2>
+      <p className="subtitle">Add, manage, and track your daily work tasks efficiently.</p>
 
+      {/* Task Form */}
       <div className="task-input">
         <input
           type="text"
@@ -55,8 +63,19 @@ function EmployeeTasks() {
         <button onClick={handleAddTask}>➕ Add Task</button>
       </div>
 
+      {/* Filter */}
+      <div className="task-filter">
+        <label>Filter Tasks: </label>
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option>All</option>
+          <option>Completed</option>
+          <option>Pending</option>
+        </select>
+      </div>
+
+      {/* Task List */}
       <div className="task-list">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <div
             key={task.id}
             className={`task-item ${task.completed ? "completed" : ""}`}
@@ -67,7 +86,7 @@ function EmployeeTasks() {
                 checked={task.completed}
                 onChange={() => toggleCompletion(task.id)}
               />
-              <span>{task.title}</span>
+              <span className="task-title">{task.title}</span>
               <span className={`priority ${task.priority.toLowerCase()}`}>
                 {task.priority}
               </span>
@@ -78,7 +97,7 @@ function EmployeeTasks() {
           </div>
         ))}
 
-        {tasks.length === 0 && <p className="no-tasks">No tasks assigned yet.</p>}
+        {filteredTasks.length === 0 && <p className="no-tasks">No tasks found.</p>}
       </div>
     </div>
   );

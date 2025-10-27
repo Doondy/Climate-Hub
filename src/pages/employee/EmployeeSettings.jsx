@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "../../styles/EmployeeSettings.css"; // Create this file
+import React, { useState, useEffect } from "react";
+import "../../styles/EmployeeSettings.css";
 
 function EmployeeSettings() {
   const [darkMode, setDarkMode] = useState(false);
@@ -7,13 +7,22 @@ function EmployeeSettings() {
   const [password, setPassword] = useState("");
   const [saved, setSaved] = useState(false);
 
+  // Apply theme dynamically
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [darkMode]);
+
   const handleSave = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
   return (
-    <div className="settings-container">
+    <div className={`settings-container ${darkMode ? "dark" : "light"}`}>
       <h2>⚙️ Account Settings</h2>
       <p className="subtitle">Manage your preferences and privacy settings.</p>
 

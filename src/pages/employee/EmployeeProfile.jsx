@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../styles/EmployeeProfile.css"; 
+import "../../styles/EmployeeProfile.css";
 
 function EmployeeProfile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -12,6 +12,10 @@ function EmployeeProfile() {
     location: "Hyderabad, India",
   });
 
+  const [profilePhoto, setProfilePhoto] = useState(
+    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+  );
+
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
@@ -21,17 +25,32 @@ function EmployeeProfile() {
     alert("Profile updated successfully!");
   };
 
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Create a temporary URL for preview
+      const imageURL = URL.createObjectURL(file);
+      setProfilePhoto(imageURL);
+    }
+  };
+
   return (
     <div className="employee-profile">
       <h2>👤 Employee Profile</h2>
 
       <div className="profile-card">
         <div className="profile-photo">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-            alt="Profile"
+          <img src={profilePhoto} alt="Profile" />
+          <label htmlFor="photo-upload" className="upload-btn">
+            📷 Change Photo
+          </label>
+          <input
+            id="photo-upload"
+            type="file"
+            accept="image/*"
+            onChange={handlePhotoChange}
+            style={{ display: "none" }}
           />
-          <button className="upload-btn">Change Photo</button>
         </div>
 
         <div className="profile-details">

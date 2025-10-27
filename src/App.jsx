@@ -13,6 +13,7 @@ import EmployeeSettings from "./pages/employee/EmployeeSettings";
 
 // Traveller
 import TravellerDashboard from "./pages/Traveller/TravellerDashboard";
+import MemoriesPage from "./pages/Traveller/MemoriesPage";
 import WeatherPage from "./pages/Traveller/WeatherPage";
 import ForecastPage from "./pages/Traveller/ForecastPage";
 import AboutPage from "./pages/Traveller/AboutPage";
@@ -38,6 +39,7 @@ function App() {
 
         {/* Traveller Dashboard */}
         <Route path="/traveller" element={<TravellerDashboard />}>
+          <Route path="memories" element={<MemoriesPage />} />
           <Route path="weather" element={<WeatherPage />} />
           <Route path="forecast" element={<ForecastPage />} />
           <Route path="about" element={<AboutPage />} />
