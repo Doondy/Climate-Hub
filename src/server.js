@@ -5,12 +5,11 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-// ✅ Correct relative paths (models and routes in same-level folders)
-import smsRoutes from "./routes/smsRoutes.js";
-import weatherRoutes from "./routes/weatherRoutes.js";
-import LoginHistory from "./models/LoginHistory.js";
-import User from "./models/User.js"; // ✅ FIXED: Correct path for User model
-import History from "./models/History.js";
+import smsRoutes from "../backend/routes/smsRoutes.js";
+import weatherRoutes from "../backend/routes/weatherRoutes.js";
+import LoginHistory from "../backend/models/LoginHistory.js";
+import User from "../backend/models/User.js";
+import History from "../backend/models/History.js";
 
 dotenv.config();
 
@@ -21,29 +20,31 @@ app.use(cors());
 app.use(express.json());
 
 // ------------------- DATABASE CONNECTION -------------------
-mongoose
-  .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/climatehub", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err.message));
+const MONGO_URI =
+  process.env.MONGO_URI ||
+  "mongodb+srv://Doondy:Doondy123@climatehub.z6fawzm.mongodb.net/ClimateHub";
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log("✅ MongoDB connected successfully");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err.message);
+  }
+};
+connectDB();
 
 // ------------------- ROUTES -------------------
 app.use("/api/weather", weatherRoutes);
 app.use("/api/sms", smsRoutes);
 
 // ------------------- AUTH / LOGIN -------------------
-
-// Register route
 app.post("/api/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validation
-    if (!name || !email || !password) {
+    if (!name || !email || !password)
       return res.status(400).json({ message: "All fields are required" });
-    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser)
@@ -59,7 +60,6 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-// Login route
 app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -98,7 +98,6 @@ app.post("/api/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Successful login log
     await LoginHistory.create({
       user: user._id,
       email,
@@ -108,7 +107,7 @@ app.post("/api/login", async (req, res) => {
       loginTime: new Date(),
     });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "secret", {
       expiresIn: "1h",
     });
 
@@ -130,11 +129,11 @@ const authMiddleware = (req, res, next) => {
 
   const token = authHeader.replace("Bearer ", "");
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret");
     req.user = decoded;
     next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid or expired token" });
+  } catch {
+    res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 
@@ -173,7 +172,6 @@ app.get("/api/login-history", authMiddleware, async (req, res) => {
   }
 });
 
-// (Admin use only)
 app.get("/api/login-history/all", authMiddleware, async (req, res) => {
   try {
     const loginHistory = await LoginHistory.find()
@@ -187,13 +185,8 @@ app.get("/api/login-history/all", authMiddleware, async (req, res) => {
 });
 
 // ------------------- BASE ROUTES -------------------
-app.get("/", (req, res) => {
-  res.send("🌐 Climate Hub Backend is running!");
-});
-
-app.get("/health", (req, res) => {
-  res.send("💓 Server is healthy!");
-});
+app.get("/", (req, res) => res.send("🌐 Climate Hub Backend is running!"));
+app.get("/health", (req, res) => res.send("💓 Server is healthy!"));
 
 // ------------------- START SERVER -------------------
 const PORT = process.env.PORT || 5000;

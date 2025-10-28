@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
 const loginHistorySchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   email: { type: String, required: true },
@@ -10,6 +9,6 @@ const loginHistorySchema = new mongoose.Schema({
   loginTime: { type: Date, default: Date.now }
 }, { timestamps: true });
 
-module.exports = mongoose.model("LoginHistory", loginHistorySchema);
+export default mongoose.model("LoginHistory", loginHistorySchema);
 
 

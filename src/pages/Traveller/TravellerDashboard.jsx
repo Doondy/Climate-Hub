@@ -6,12 +6,12 @@ import "../../styles/TravellerDashboard.css";
 function TravellerDashboard() {
   const [travellers, setTravellers] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/travellers")
-      .then((res) => setTravellers(res.data))
-      .catch((err) => console.error("Error fetching travellers:", err));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:5000/api/travellers")
+  //     .then((res) => setTravellers(res.data))
+  //     .catch((err) => console.error("Error fetching travellers:", err));
+  // }, []);
 
   return (
     <div className="traveller-dashboard">

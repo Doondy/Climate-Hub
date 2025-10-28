@@ -1,146 +1,83 @@
-/* ============================= */
-/* TripPlanner Page CSS           */
-/* ============================= */
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", sans-serif;
-  background-color: #0f172a;
-  color: #e2e8f0;
-}
-
-/* Container */
 .trip-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* full viewport height */
-  padding: 2rem;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+  background: #eef2f3;
+  color: #222;
+  min-height: 100vh;
 }
 
-/* Main content area to push footer down */
-.trip-container > .trip-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Page title */
-.trip-container h2 {
-  font-size: 2rem;
-  color: #38bdf8;
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-/* Subtitle/description */
-.trip-container p {
-  font-size: 1rem;
-  color: #cbd5e1;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-/* ============================= */
-/* Form Styling                   */
-/* ============================= */
-.trip-form {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 2rem;
+.trip-content {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  margin-bottom: 30px;
 }
 
 .trip-form input {
-  padding: 10px 15px;
-  width: 300px;
+  padding: 10px;
+  width: 250px;
   border-radius: 8px;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  background: rgba(30, 41, 59, 0.7);
-  color: #e2e8f0;
-  backdrop-filter: blur(10px);
-}
-
-.trip-form input::placeholder {
-  color: #94a3b8;
+  border: 1px solid #aaa;
+  margin-right: 10px;
 }
 
 .trip-form button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  background-color: #2563eb;
+  padding: 10px 15px;
+  background: #0077b6;
   color: white;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.3s;
 }
 
 .trip-form button:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-2px);
-}
-
-/* ============================= */
-/* Trip Suggestions List Styling  */
-/* ============================= */
-.trip-list {
-  list-style: none;
-  padding: 0;
-  width: 100%;
-  max-width: 600px;
+  background: #005f8a;
 }
 
 .trip-list li {
-  background: rgba(51, 65, 85, 0.7);
-  margin-bottom: 10px;
-  padding: 12px 15px;
-  border-radius: 10px;
-  transition: transform 0.3s, background 0.3s;
-}
-
-.trip-list li:hover {
-  transform: translateY(-3px);
-  background: rgba(37, 99, 235, 0.3);
+  list-style: none;
+  margin: 5px 0;
 }
 
 .trip-list a {
   text-decoration: none;
-  color: #e2e8f0;
+  color: #0077b6;
   font-weight: 500;
 }
 
 .trip-list a:hover {
-  color: #38bdf8;
+  text-decoration: underline;
 }
 
-/* ============================= */
-/* Footer Styling                 */
-/* ============================= */
+.master-table, .transaction-table {
+  margin-top: 25px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background: #0077b6;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
 .trip-footer {
   text-align: center;
-  font-size: 0.9rem;
-  color: #94a3b8;
-  padding: 1rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(15, 23, 42, 0.7);
-  margin-top: auto;
-}
-
-/* ============================= */
-/* Responsive adjustments         */
-/* ============================= */
-@media (max-width: 480px) {
-  .trip-form input {
-    width: 90%;
-  }
-  
-  .trip-list {
-    width: 95%;
-  }
+  padding: 10px;
+  font-size: 14px;
+  color: #444;
 }

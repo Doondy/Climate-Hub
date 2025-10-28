@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import WeatherChart from "../../components/WeatherChart";
-import "../../styles/WeatherGraphsPage.css"; 
+import "../../styles/WeatherGraphsPage.css";
 
 function WeatherGraphsPage() {
   const [city, setCity] = useState("");
@@ -12,9 +12,17 @@ function WeatherGraphsPage() {
   const [loading, setLoading] = useState(false);
   const [news, setNews] = useState([]);
   const [bgClass, setBgClass] = useState("bg-clear");
+  const [transactions, setTransactions] = useState([]); // 🧾 Transaction Table
 
   const WEATHER_API_KEY = "22c33f3b11fe3fe3f2588df94e90f2e3";
   const NEWS_API_KEY = "pub_ea98e2df8ab942c6a71554c3d05b68bf";
+
+  // 🌦️ Master Table Data
+  const masterTable = [
+    { parameter: "Temperature", unit: "°C", description: "Average air temperature" },
+    { parameter: "Humidity", unit: "%", description: "Moisture content in the air" },
+    { parameter: "Rainfall", unit: "mm", description: "Rain volume in last 3 hours" },
+  ];
 
   const fetchWeatherData = async () => {
     if (!city.trim()) {
@@ -33,7 +41,7 @@ function WeatherGraphsPage() {
       );
       const list = response.data.list;
 
-      // Update background class
+      // Update background
       const weatherMain = list[0].weather[0].main.toLowerCase();
       if (weatherMain.includes("cloud")) setBgClass("bg-cloudy");
       else if (weatherMain.includes("rain")) setBgClass("bg-rain");
@@ -65,6 +73,17 @@ function WeatherGraphsPage() {
       setTempData(tempGraph);
       setHumidityData(humidityGraph);
       setRainData(rainGraph);
+
+      // 🧾 Add Transaction Entry
+      setTransactions((prev) => [
+        ...prev,
+        {
+          id: prev.length + 1,
+          city: city,
+          weather: weatherMain,
+          date: new Date().toLocaleString(),
+        },
+      ]);
     } catch (err) {
       console.error(err);
       setError("City not found or network error.");
@@ -73,7 +92,7 @@ function WeatherGraphsPage() {
     }
   };
 
-  // Fetch News
+  // 📰 Fetch News
   useEffect(() => {
     const fetchNews = async () => {
       try {
@@ -108,7 +127,7 @@ function WeatherGraphsPage() {
       {error && <p className="error">{error}</p>}
       {loading && <p className="loading">Fetching data...</p>}
 
-      {/* Charts */}
+      {/* Charts Section */}
       <div className="charts-section">
         {tempData.length > 0 && (
           <WeatherChart data={tempData} title="Temperature (°C) over Next 7 Forecasts" />
@@ -121,7 +140,55 @@ function WeatherGraphsPage() {
         )}
       </div>
 
-      {/* News Section */}
+      {/* 🌦️ Master Table */}
+      <div className="master-table">
+        <h2>🌍 Master Table — Weather Parameters</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {masterTable.map((row, index) => (
+              <tr key={index}>
+                <td>{row.parameter}</td>
+                <td>{row.unit}</td>
+                <td>{row.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* 🧾 Transaction Table */}
+      <div className="transaction-table">
+        <h2>🧾 Transaction Table — User Searches</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>City</th>
+              <th>Main Weather</th>
+              <th>Date & Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((tx) => (
+              <tr key={tx.id}>
+                <td>{tx.id}</td>
+                <td>{tx.city}</td>
+                <td>{tx.weather}</td>
+                <td>{tx.date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* 📰 News Section */}
       <div className="news-section">
         <h2>📰 Global Business & Climate News</h2>
         <div className="news-grid">

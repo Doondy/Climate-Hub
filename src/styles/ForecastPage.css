@@ -1,39 +1,45 @@
 /* 🌤 General Page Styling */
 .forecast-page {
   font-family: "Inter", "Segoe UI", sans-serif;
-  background: linear-gradient(135deg, #eaf4fc, #f8fbff);
+  background: linear-gradient(135deg, #eaf4fc, #f9fbff);
   color: #1e293b;
   min-height: 100vh;
   padding: 40px 5%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 /* 🏷 Page Title */
 .forecast-page h1 {
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #0f4c81;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
 }
 
-/* 🔍 Search Form */
+/* 🔍 Search / Forecast Form */
 .forecast-form {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 12px;
   margin-bottom: 25px;
+  flex-wrap: wrap;
 }
 
 .forecast-form input {
-  width: 300px;
-  padding: 12px 14px;
-  border: 1.5px solid #b0c4de;
+  width: 320px;
+  padding: 12px 16px;
+  border: 1.8px solid #b0c4de;
   border-radius: 10px;
   font-size: 15px;
   outline: none;
   transition: all 0.3s ease;
+  background-color: #ffffff;
 }
 
 .forecast-form input:focus {
@@ -42,7 +48,7 @@
 }
 
 .forecast-form button {
-  padding: 12px 22px;
+  padding: 12px 24px;
   background-color: #0f4c81;
   color: white;
   border: none;
@@ -55,6 +61,125 @@
 .forecast-form button:hover {
   background-color: #0a375e;
   transform: translateY(-1px);
+}
+
+/* ⚙️ Master Form */
+.master-form {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  margin: 20px auto;
+  max-width: 900px;
+}
+
+.master-form h2 {
+  color: #0f4c81;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.master-form input,
+.master-form select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1.5px solid #b0c4de;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.master-form input:focus,
+.master-form select:focus {
+  border-color: #0f4c81;
+  box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.15);
+}
+
+.master-form button {
+  background-color: #0f4c81;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.master-form button:hover {
+  background-color: #0a375e;
+  transform: translateY(-2px);
+}
+
+/* 🧾 Transaction Form */
+.transaction-form {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  margin-top: 20px;
+}
+
+.transaction-form h2 {
+  color: #0f4c81;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.transaction-form input,
+.transaction-form select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border: 1.5px solid #b0c4de;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+}
+
+.transaction-form input:focus,
+.transaction-form select:focus {
+  border-color: #0f4c81;
+  box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.15);
+}
+
+/* 📋 Master & Transaction Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.data-table th {
+  background-color: #0f4c81;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.data-table tr:hover {
+  background-color: #f9fafb;
+}
+
+.data-table td {
+  font-size: 0.95rem;
+  color: #334155;
 }
 
 /* ⚠ Error / Loading */
@@ -182,12 +307,15 @@
     align-items: center;
   }
 
-  .forecast-form input {
-    width: 85%;
+  .forecast-form input,
+  .forecast-form button {
+    width: 90%;
   }
 
-  .forecast-form button {
-    width: 85%;
+  .master-form,
+  .transaction-form {
+    width: 95%;
+    padding: 20px;
   }
 
   .forecast-page h1 {

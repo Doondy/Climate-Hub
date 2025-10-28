@@ -1,29 +1,29 @@
-// src/services/forecastService.js
 import axios from "axios";
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-const BASE_URL =
-  import.meta.env.VITE_WEATHER_API_URL ||
-  "https://api.openweathermap.org/data/2.5/forecast";
+const BASE_URL = import.meta.env.VITE_WEATHER_API_URL;
 
 export const getForecast = async (city) => {
   try {
+    // Add console.log for debugging
+    console.log("API Key:", API_KEY);
+    console.log("Base URL:", BASE_URL);
+
     if (!API_KEY) {
-      console.error("Weather API key not found in environment variables");
-      return null;
+      throw new Error("Weather API key not configured");
     }
 
     const response = await axios.get(BASE_URL, {
       params: {
         q: city,
         appid: API_KEY,
-        units: "metric", // Change to "imperial" for °F if needed
+        units: "metric",
       },
     });
 
     return response.data;
   } catch (error) {
     console.error("Error fetching forecast:", error.message);
-    return null;
+    throw error; // Let the component handle the error
   }
 };
