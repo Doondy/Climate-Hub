@@ -10,14 +10,16 @@ function ForecastPage() {
   const [error, setError] = useState("");
   const [loadingForecast, setLoadingForecast] = useState(false);
 
-  // Master Table State
-  const [masterData, setMasterData] = useState([]);
-  const [masterForm, setMasterForm] = useState({
-    cityName: "",
-    country: "",
-    latitude: "",
-    longitude: "",
+  // Traveller Report Form State
+  const [reportData, setReportData] = useState([]);
+  const [reportForm, setReportForm] = useState({
+    travellerName: "",
+    city: "",
+    weatherCondition: "",
+    experience: "",
+    date: "",
   });
+  const [editingReportId, setEditingReportId] = useState(null);
 
   // Transaction Table State
   const [transactionData, setTransactionData] = useState([]);
@@ -26,6 +28,7 @@ function ForecastPage() {
     date: "",
     action: "",
   });
+  const [editingTransactionId, setEditingTransactionId] = useState(null);
 
   // Fetch Global News on Page Load
   useEffect(() => {
@@ -69,22 +72,47 @@ function ForecastPage() {
     setLoadingForecast(false);
   };
 
-  // --- MASTER FORM HANDLERS ---
-  const handleMasterChange = (e) => {
+  // --- REPORT FORM HANDLERS ---
+  const handleReportChange = (e) => {
     const { name, value } = e.target;
-    setMasterForm({ ...masterForm, [name]: value });
+    setReportForm({ ...reportForm, [name]: value });
   };
 
-  const handleAddMaster = (e) => {
+  const handleAddOrUpdateReport = (e) => {
     e.preventDefault();
-    if (!masterForm.cityName.trim()) return;
+    if (!reportForm.travellerName.trim() || !reportForm.city.trim()) return;
 
-    const newEntry = {
-      ...masterForm,
-      id: Date.now(),
-    };
-    setMasterData([...masterData, newEntry]);
-    setMasterForm({ cityName: "", country: "", latitude: "", longitude: "" });
+    if (editingReportId) {
+      setReportData(
+        reportData.map((item) =>
+          item.id === editingReportId ? { ...item, ...reportForm } : item
+        )
+      );
+      setEditingReportId(null);
+    } else {
+      const newReport = { ...reportForm, id: Date.now() };
+      setReportData([...reportData, newReport]);
+    }
+
+    setReportForm({
+      travellerName: "",
+      city: "",
+      weatherCondition: "",
+      experience: "",
+      date: "",
+    });
+  };
+
+  const handleEditReport = (id) => {
+    const report = reportData.find((item) => item.id === id);
+    if (report) {
+      setReportForm(report);
+      setEditingReportId(id);
+    }
+  };
+
+  const handleDeleteReport = (id) => {
+    setReportData(reportData.filter((item) => item.id !== id));
   };
 
   // --- TRANSACTION FORM HANDLERS ---
@@ -93,16 +121,35 @@ function ForecastPage() {
     setTransactionForm({ ...transactionForm, [name]: value });
   };
 
-  const handleAddTransaction = (e) => {
+  const handleAddOrUpdateTransaction = (e) => {
     e.preventDefault();
     if (!transactionForm.cityName.trim()) return;
 
-    const newTxn = {
-      ...transactionForm,
-      id: Date.now(),
-    };
-    setTransactionData([...transactionData, newTxn]);
+    if (editingTransactionId) {
+      setTransactionData(
+        transactionData.map((item) =>
+          item.id === editingTransactionId ? { ...item, ...transactionForm } : item
+        )
+      );
+      setEditingTransactionId(null);
+    } else {
+      const newTxn = { ...transactionForm, id: Date.now() };
+      setTransactionData([...transactionData, newTxn]);
+    }
+
     setTransactionForm({ cityName: "", date: "", action: "" });
+  };
+
+  const handleEditTransaction = (id) => {
+    const txn = transactionData.find((item) => item.id === id);
+    if (txn) {
+      setTransactionForm(txn);
+      setEditingTransactionId(id);
+    }
+  };
+
+  const handleDeleteTransaction = (id) => {
+    setTransactionData(transactionData.filter((item) => item.id !== id));
   };
 
   return (
@@ -143,58 +190,80 @@ function ForecastPage() {
         </div>
       )}
 
-      {/* MASTER FORM & TABLE */}
-      <div className="master-section">
-        <h2>🏙️ City Information</h2>
-        <form className="master-form" onSubmit={handleAddMaster}>
+      {/* 🧍‍♂️ TRAVELLER REPORT FORM */}
+      <div className="report-section">
+        <h2>🧍‍♂️ Traveller Report Form</h2>
+        <form className="report-form" onSubmit={handleAddOrUpdateReport}>
           <input
             type="text"
-            name="cityName"
-            placeholder="City Name"
-            value={masterForm.cityName}
-            onChange={handleMasterChange}
+            name="travellerName"
+            placeholder="Traveller Name"
+            value={reportForm.travellerName}
+            onChange={handleReportChange}
             required
           />
           <input
             type="text"
-            name="country"
-            placeholder="Country"
-            value={masterForm.country}
-            onChange={handleMasterChange}
+            name="city"
+            placeholder="City"
+            value={reportForm.city}
+            onChange={handleReportChange}
+            required
           />
           <input
             type="text"
-            name="latitude"
-            placeholder="Latitude"
-            value={masterForm.latitude}
-            onChange={handleMasterChange}
+            name="weatherCondition"
+            placeholder="Weather Condition"
+            value={reportForm.weatherCondition}
+            onChange={handleReportChange}
+          />
+          <textarea
+            name="experience"
+            placeholder="Describe your experience..."
+            value={reportForm.experience}
+            onChange={handleReportChange}
+            rows={3}
           />
           <input
-            type="text"
-            name="longitude"
-            placeholder="Longitude"
-            value={masterForm.longitude}
-            onChange={handleMasterChange}
+            type="date"
+            name="date"
+            value={reportForm.date}
+            onChange={handleReportChange}
+            required
           />
-          <button type="submit">Add City</button>
+          <button type="submit">
+            {editingReportId ? "Update Report" : "Submit Report"}
+          </button>
         </form>
 
+        {/* Report Table */}
         <table className="data-table">
           <thead>
             <tr>
-              <th>City Name</th>
-              <th>Country</th>
-              <th>Latitude</th>
-              <th>Longitude</th>
+              <th>Traveller Name</th>
+              <th>City</th>
+              <th>Weather</th>
+              <th>Experience</th>
+              <th>Date</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {masterData.map((row) => (
+            {reportData.map((row) => (
               <tr key={row.id}>
-                <td>{row.cityName}</td>
-                <td>{row.country}</td>
-                <td>{row.latitude}</td>
-                <td>{row.longitude}</td>
+                <td>{row.travellerName}</td>
+                <td>{row.city}</td>
+                <td>{row.weatherCondition}</td>
+                <td>{row.experience}</td>
+                <td>{row.date}</td>
+                <td>
+                  <button className="edit-btn" onClick={() => handleEditReport(row.id)}>
+                    Edit
+                  </button>
+                  <button className="delete-btn" onClick={() => handleDeleteReport(row.id)}>
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -204,7 +273,7 @@ function ForecastPage() {
       {/* TRANSACTION FORM & TABLE */}
       <div className="transaction-section">
         <h2>🧾 User Forecast Actions</h2>
-        <form className="transaction-form" onSubmit={handleAddTransaction}>
+        <form className="transaction-form" onSubmit={handleAddOrUpdateTransaction}>
           <input
             type="text"
             name="cityName"
@@ -228,7 +297,9 @@ function ForecastPage() {
             onChange={handleTransactionChange}
             required
           />
-          <button type="submit">Add Transaction</button>
+          <button type="submit">
+            {editingTransactionId ? "Update Action" : "Add Transaction"}
+          </button>
         </form>
 
         <table className="data-table">
@@ -237,6 +308,7 @@ function ForecastPage() {
               <th>City Name</th>
               <th>Date</th>
               <th>Action</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -245,32 +317,35 @@ function ForecastPage() {
                 <td>{txn.cityName}</td>
                 <td>{txn.date}</td>
                 <td>{txn.action}</td>
+                <td>
+                  <button className="edit-btn" onClick={() => handleEditTransaction(txn.id)}>
+                    Edit
+                  </button>
+                  <button className="delete-btn" onClick={() => handleDeleteTransaction(txn.id)}>
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
+      {/* GLOBAL NEWS SECTION */}
       <h2>📰 Global News</h2>
       <div className="news-cards">
         {news.length === 0 && <p>Loading news...</p>}
         {news.map((article, idx) => (
           <div key={idx} className="news-card">
             {article.image_url && (
-              <img
-                src={article.image_url}
-                alt={article.title}
-                className="news-image"
-              />
+              <img src={article.image_url} alt={article.title} className="news-image" />
             )}
             <a href={article.link} target="_blank" rel="noopener noreferrer">
               <h3>{article.title}</h3>
             </a>
             <p>{article.description || "No description available."}</p>
             <p className="published">
-              {article.pubDate
-                ? new Date(article.pubDate).toLocaleString()
-                : ""}
+              {article.pubDate ? new Date(article.pubDate).toLocaleString() : ""}
             </p>
           </div>
         ))}

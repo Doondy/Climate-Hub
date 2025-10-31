@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_WEATHER_API_URL;
 export const getForecast = async (city) => {
   try {
     // Add console.log for debugging
-    console.log("API Key:", API_KEY);
+    console.log("API Key:", "22c33f3b11fe3fe3f2588df94e90f2e3");
     console.log("Base URL:", BASE_URL);
 
     if (!API_KEY) {
