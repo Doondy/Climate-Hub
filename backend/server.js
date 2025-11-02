@@ -5,239 +5,150 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-// ✅ Import routes & models
+// ✅ IMPORT MODELS
+import User from "./models/User.js";
+import LoginHistory from "./models/LoginHistory.js";
+import History from "./models/History.js";
+
+// ✅ IMPORT NEW MODELS (optional but good for role extension)
+import Employee from "./models/Employee.js";
+import Company from "./models/Company.js";
+
+// ✅ IMPORT ROUTES
 import smsRoutes from "./routes/smsRoutes.js";
 import weatherRoutes from "./routes/weatherRoutes.js";
-import LoginHistory from "./models/LoginHistory.js";
-import User from "./models/User.js";
-import History from "./models/History.js";
-import EmployeeReport from "./models/EmployeeReport.js"; // ✅ New model
+import weatherAbsenceRoutes from "./routes/weatherAbsenceRoutes.js";
+import transactionRoutes from "./routes/transactionRoutes.js";
+import phoneSubscriptionRoutes from "./routes/phoneSubscription.js";
+import employeeRoutes from "./routes/EmployeeRoutes.js";
+import travellerReportRoutes from "./routes/TravellerReportRoutes.js";
+import tripRoutes from "./routes/tripRoutes.js";
 
 dotenv.config();
 
+// ✅ INIT APP
 const app = express();
-
-// ------------------- MIDDLEWARE -------------------
 app.use(cors());
 app.use(express.json());
 
-// ------------------- DATABASE CONNECTION -------------------
-mongoose
-  .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/climatehub", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err.message));
+// ✅ CONNECT MONGO
+const MONGO_URI =
+  process.env.MONGO_URI ||
+  "mongodb+srv://Doondy:Doondy123@climatehub.z6fawzm.mongodb.net/";
 
-// ------------------- ROUTES -------------------
+const connectDB = async () => {
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log("✅ MongoDB connected");
+  } catch (error) {
+    console.error("❌ MongoDB error:", error.message);
+  }
+};
+connectDB();
+
+// ✅ ROUTES
 app.use("/api/weather", weatherRoutes);
+app.use("/api/weather/absence", weatherAbsenceRoutes);
 app.use("/api/sms", smsRoutes);
+app.use("/api/transactions", transactionRoutes);
+app.use("/api/phone-subscription", phoneSubscriptionRoutes);
 
-// ------------------- AUTH / LOGIN -------------------
+// ✅ NEW ROUTES
+app.use("/api/employee", employeeRoutes);
+app.use("/api/traveller-reports", travellerReportRoutes);
+app.use("/api/trips", tripRoutes);
 
-// Register route
+// ✅ REGISTER USER (Traveller or Employee by role)
 app.post("/api/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role = "traveller" } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+    if (!name || !email || !password)
+      return res.status(400).json({ message: "All fields required" });
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ message: "User already exists" });
+    const exists = await User.findOne({ email });
+    if (exists) return res.status(400).json({ message: "User already exists" });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
+    const hashed = await bcrypt.hash(password, 10);
+    const user = new User({ name, email, password: hashed, role });
     await user.save();
 
-    res.status(201).json({ message: "User registered successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(201).json({ message: "Registered Successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Login route
+// ✅ LOGIN
 app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    const ipAddress =
-      req.headers["x-forwarded-for"] ||
-      req.socket.remoteAddress ||
-      "Unknown IP";
-    const userAgent = req.headers["user-agent"] || "Unknown device";
+    const userAgent = req.headers["user-agent"];
+    const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
     const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "Invalid Credentials" });
 
-    if (!user) {
-      await LoginHistory.create({
-        email,
-        ipAddress,
-        userAgent,
-        loginStatus: "failed",
-        failureReason: "User not found",
-        loginTime: new Date(),
-      });
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      await LoginHistory.create({
-        user: user._id,
-        email,
-        ipAddress,
-        userAgent,
-        loginStatus: "failed",
-        failureReason: "Incorrect password",
-        loginTime: new Date(),
-      });
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) return res.status(400).json({ message: "Invalid Credentials" });
 
     await LoginHistory.create({
       user: user._id,
       email,
-      ipAddress,
+      ipAddress: ip,
       userAgent,
       loginStatus: "success",
       loginTime: new Date(),
     });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET || "secret", {
+      expiresIn: "1d",
     });
 
-    res.json({
-      token,
-      user: { id: user._id, name: user.name, email: user.email },
-    });
+    res.json({ token, user });
   } catch (err) {
-    console.error("Login error:", err.message);
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// ------------------- AUTH MIDDLEWARE -------------------
-const authMiddleware = (req, res, next) => {
-  const authHeader = req.header("Authorization");
-  if (!authHeader)
-    return res.status(401).json({ message: "Authorization header missing" });
+// ✅ AUTH MIDDLEWARE
+const auth = (req, res, next) => {
+  const header = req.header("Authorization");
+  if (!header) return res.status(401).json({ message: "Auth token required" });
 
-  const token = authHeader.replace("Bearer ", "");
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    const token = header.replace("Bearer ", "");
+    req.user = jwt.verify(token, process.env.JWT_SECRET || "secret");
     next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid or expired token" });
+  } catch {
+    res.status(401).json({ message: "Invalid token" });
   }
 };
 
-// ------------------- HISTORY ROUTES -------------------
-app.get("/api/history", authMiddleware, async (req, res) => {
-  try {
-    const history = await History.find({ user: req.user.id }).sort({
-      createdAt: -1,
-    });
-    res.json(history);
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
+// ✅ USER HISTORY
+app.get("/api/history", auth, async (req, res) => {
+  const data = await History.find({ user: req.user.id }).sort({ createdAt: -1 });
+  res.json(data);
 });
 
-app.post("/api/history", authMiddleware, async (req, res) => {
-  try {
-    const { city, weatherData } = req.body;
-    const newHistory = new History({ user: req.user.id, city, weatherData });
-    await newHistory.save();
-    res.status(201).json(newHistory);
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
+app.post("/api/history", auth, async (req, res) => {
+  const newEntry = new History({ user: req.user.id, ...req.body });
+  await newEntry.save();
+  res.json(newEntry);
 });
 
-// ------------------- LOGIN HISTORY ROUTES -------------------
-app.get("/api/login-history", authMiddleware, async (req, res) => {
-  try {
-    const loginHistory = await LoginHistory.find({ user: req.user.id })
-      .sort({ loginTime: -1 })
-      .limit(50);
-    res.json(loginHistory);
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
+// ✅ LOGIN HISTORY
+app.get("/api/login-history", auth, async (req, res) => {
+  const logs = await LoginHistory.find({ user: req.user.id }).sort({ loginTime: -1 });
+  res.json(logs);
 });
 
-// Admin: all user login history
-app.get("/api/login-history/all", authMiddleware, async (req, res) => {
-  try {
-    const loginHistory = await LoginHistory.find()
-      .populate("user", "name email")
-      .sort({ loginTime: -1 })
-      .limit(100);
-    res.json(loginHistory);
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-});
+// ✅ TEST ROUTES
+app.get("/", (req, res) => res.send("🌍 ClimateHub Backend Running"));
+app.get("/health", (req, res) => res.send("✅ Healthy Server"));
 
-// ------------------- EMPLOYEE REPORTS ROUTES -------------------
-
-// Get all employee reports
-app.get("/api/employees/reports", authMiddleware, async (req, res) => {
-  try {
-    const reports = await EmployeeReport.find().populate("employeeId", "name email");
-    res.json(reports);
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-});
-
-// Get reports for a specific employee
-app.get("/api/employees/reports/:id", authMiddleware, async (req, res) => {
-  try {
-    const reports = await EmployeeReport.find({ employeeId: req.params.id }).sort({
-      date: -1,
-    });
-    res.json(reports);
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-});
-
-// Create new report
-app.post("/api/employees/reports", authMiddleware, async (req, res) => {
-  try {
-    const { employeeId, date, attendanceStatus, tasksCompleted, remarks } = req.body;
-
-    const newReport = new EmployeeReport({
-      employeeId,
-      date,
-      attendanceStatus,
-      tasksCompleted,
-      remarks,
-    });
-
-    await newReport.save();
-    res.status(201).json({ message: "Report created successfully", newReport });
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-});
-
-// ------------------- BASE ROUTES -------------------
-app.get("/", (req, res) => {
-  res.send("🌐 Climate Hub Backend is running!");
-});
-
-app.get("/health", (req, res) => {
-  res.send("💓 Server is healthy!");
-});
-
-// ------------------- START SERVER -------------------
+// ✅ START SERVER
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Server running at http://localhost:${PORT}`)
+);
